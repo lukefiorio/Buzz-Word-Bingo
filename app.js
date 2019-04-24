@@ -1,17 +1,15 @@
+'use strict';
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-
-const jsonParser = bodyParser.json();
 const urlParser = bodyParser.urlencoded({ extended: false });
-//const about = require('./routes/about.js');
 const PORT = 3000;
 
 let buzzwords = [];
 let score = 0;
 
 app.use(express.static('public'));
-//app.use(urlParser);
 
 app.get('/', (req, res) => {
   res.render('index.html');
