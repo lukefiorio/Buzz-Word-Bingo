@@ -21,7 +21,7 @@ app.get('/buzzwords', (req, res) => {
 
 app.post('/buzzwords', urlParser, (req, res) => {
   //check for 'buzzword' & 'points' keys
-  const hasKeys = !(req.body.buzzword === undefined || req.body.points === undefined);
+  const hasKeys = !req.body.buzzword && !req.body.points;
   if ((buzzwords.length <= 5) & hasKeys) {
     buzzwords.push(req.body);
     res.send(`{ "success": true}`);
@@ -31,8 +31,8 @@ app.post('/buzzwords', urlParser, (req, res) => {
 });
 
 app.put('/buzzwords', urlParser, (req, res) => {
-  const findBuzzword = buzzwords.indexOf(buzzwords.find((obj) => obj.buzzword === req.body.buzzword));
-  const hasKeys = !(req.body.buzzword === undefined || req.body.points === undefined);
+  const findBuzzword = buzzwords.findIndex((obj) => obj.buzzword === req.body.buzzword);
+  const hasKeys = !req.body.buzzword && !req.body.points;
   if (findBuzzword > -1 && hasKeys) {
     buzzwords[findBuzzword].points = req.body.points;
     res.send(`{ "success": true }`);
@@ -42,7 +42,7 @@ app.put('/buzzwords', urlParser, (req, res) => {
 });
 
 app.delete('/buzzwords', urlParser, (req, res) => {
-  const findBuzzword = buzzwords.indexOf(buzzwords.find((obj) => obj.buzzword === req.body.buzzword));
+  const findBuzzword = buzzwords.findIndex((obj) => obj.buzzword === req.body.buzzword);
   if (findBuzzword > -1) {
     buzzwords.splice(findBuzzword, 1);
     res.send(`{ "success": true }`);
@@ -58,7 +58,7 @@ app.post('/reset', urlParser, (req, res) => {
 });
 
 app.post('/heard', urlParser, (req, res) => {
-  const findBuzzword = buzzwords.indexOf(buzzwords.find((obj) => obj.buzzword === req.body.buzzword));
+  const findBuzzword = buzzwords.findIndex((obj) => obj.buzzword === req.body.buzzword);
   if (findBuzzword > -1) {
     score += Number(buzzwords[findBuzzword].points);
     res.send(`{ "totalScore": ${score} }`);
